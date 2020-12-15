@@ -1,11 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import useStyles from "./Appbar.styles";
+import { IconButton, TextField } from "@material-ui/core";
+import { Search, FilterList, Close } from "@material-ui/icons";
 
-export default function Appbar() {
+export default function Appbar({ onSearch }) {
   const classes = useStyles();
+  const [isSearching, setIsSearching] = useState(false);
+
+  const handleSearchClick = () => {
+    setIsSearching(!isSearching);
+  };
+
   return (
     <header className={classes.appbar}>
-      <h2 className={classes.title}>Restaurants</h2>
+      <TextField
+        className={classes.search + " " + (isSearching ? "" : classes.hidden)}
+        variant="outlined"
+        onChange={onSearch}
+        placeholder="Search"
+      />
+      <h2 className={classes.title + " " + (isSearching ? classes.hidden : "")}>
+        Restaurants
+      </h2>
+
+      <div>
+        <IconButton onClick={handleSearchClick}>
+          {isSearching ? <Close /> : <Search />}
+        </IconButton>
+        <IconButton>
+          <FilterList />
+        </IconButton>
+      </div>
     </header>
   );
 }
