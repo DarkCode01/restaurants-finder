@@ -2,7 +2,7 @@ import React from "react";
 import Star from "../icons/star.svg";
 import Arrow from '../icons/arrow_right.svg';
 import useStyles from "./Card.styles";
-export default function ({ restaurant }) {
+export default function Card({ restaurant }) {
   const classes = useStyles();
   return (
     <li className={classes.card}>
