@@ -35,10 +35,12 @@ export default class Restaurant {
     return now > day.openAt && now < day.closeAt;
   }
 
-  addReview(obj){
-    this.raw.reviews.splice(0,0,obj);
+  addReview(obj) {
+    this.raw.reviews.splice(0, 0, obj);
     return new Restaurant(this.raw);
   }
 
-  isOpenAt(date) {}
+  isOpenAt(weekDayIndex) {
+    return this.schedule.days[weekDayIndex].raw !== "Closed";
+  }
 }

@@ -5,11 +5,23 @@ import {
   ListItem,
   Divider,
   Checkbox,
+  Select,
+  MenuItem,
+  Radio,
 } from "@material-ui/core";
 import { Done } from "@material-ui/icons";
 
 export default function Drawer({ toogleDrawer, isOpen, saveFilters, filters }) {
   const [localFilters, setLocalFilters] = useState(filters);
+  const weekDays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thurtsday",
+    "Friday",
+    "Saturday",
+  ];
   return (
     <MUIDrawer
       onClose={toogleDrawer}
@@ -44,13 +56,42 @@ export default function Drawer({ toogleDrawer, isOpen, saveFilters, filters }) {
       <Divider />
       <h5 style={{ paddingLeft: "8px" }}>Filter by</h5>
       <ListItem>
-        <Checkbox
+        <Radio
           checked={localFilters.openNow}
           onChange={(e, checked) => {
-            setLocalFilters({ ...localFilters, openNow: checked });
+            setLocalFilters({
+              ...localFilters,
+              openNow: checked,
+              openAt: false,
+            });
           }}
         />
         Open now
+      </ListItem>
+      <ListItem>
+        <Radio
+          checked={localFilters.openAt}
+          onChange={(e, checked) => {
+            setLocalFilters({
+              ...localFilters,
+              openNow: false,
+              openAt: checked,
+            });
+          }}
+        />{" "}
+        Open At &nbsp;
+        <Select value={localFilters.openDay} onChange={(event)=>{
+          setLocalFilters({
+            ...localFilters,
+            openDay: event.target.value
+          })
+        }}>
+          {weekDays.map((day, index) => (
+            <MenuItem key={index} value={index.toString()}>
+              {day}
+            </MenuItem>
+          ))}
+        </Select>
       </ListItem>
     </MUIDrawer>
   );

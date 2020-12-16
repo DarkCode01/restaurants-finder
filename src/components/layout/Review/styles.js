@@ -3,7 +3,9 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(() => ({
   review: {
     padding: "10px",
-    maxWidth: "30%",
+    margin: '6px',
+    width: '100%',
+    maxWidth: '400px',
     border: "1px solid #ddd",
     "& div": {
       display: "flex",

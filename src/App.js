@@ -16,6 +16,8 @@ function App() {
     rating: false,
     location: false,
     openNow: false,
+    openAt: false,
+    openDay: 0,
   });
 
   const fetchRestaurants = async () => {
@@ -51,13 +53,16 @@ function App() {
     const value = event.target.value;
     const words = value.split(" ");
     setFiltered(
-      restaurants.filter((restaurant) => {
-        if (!value) return true;
-        for (let word of words) {
-          if (restaurant.lowerName.includes(word) && word) return true;
-        }
-        return false;
-      })
+      _filterRestaurants(
+        restaurants.filter((restaurant) => {
+          if (!value) return true;
+          for (let word of words) {
+            if (restaurant.lowerName.includes(word) && word) return true;
+          }
+          return false;
+        }),
+        filters
+      )
     );
   };
 
@@ -65,30 +70,34 @@ function App() {
     setDrawerIsOpen(!drawerIsOpen);
   };
 
+  const _filterRestaurants = (restaurants, filters) => {
+    return restaurants
+      .filter((restaurant) => {
+        if (filters.openNow && !restaurant.isOpenAtNow) {
+          return false;
+        } else if (filters.openAt && !restaurant.isOpenAt(filters.openDay)) {
+          return false;
+        }
+        return true;
+      })
+      .sort((a, b) => {
+        if (filters.rating) {
+          return b.rating - a.rating;
+        }
+        return 1;
+      });
+  };
+
   const saveFilters = (filters) => {
     setFilters(filters);
-    setFiltered(
-      restaurants
-        .filter((restaurant) => {
-          if (filters.openNow && !restaurant.isOpenAtNow) {
-            return false;
-          }
-          return true;
-        })
-        .sort((a, b) => {
-          if (filters.rating) {
-            return b.rating - a.rating;
-          }
-          return 1;
-        })
-    );
+    setFiltered(_filterRestaurants(restaurants, filters));
     toogleDrawer();
   };
 
   const addReview = (review) => {
-    const r =restaurant.addReview(review);
+    const r = restaurant.addReview(review);
     setRestaurant(r);
-    console.log('sete')
+    console.log("sete");
   };
   return (
     <Router>

@@ -12,7 +12,7 @@
       },
       "cuisine_type": "Asian",
       "operating_hours": {
-        "Sunday": "12:00 pm - 4:00 pm",
+        "Sunday": "Closed",
         "Monday": "5:30 pm - 11:00 pm",
         "Tuesday": "5:30 pm - 12:00 am",
         "Wednesday": "5:30 pm - 12:00 am",
@@ -53,7 +53,7 @@
       },
       "cuisine_type": "Pizza",
       "operating_hours": {
-        "Sunday": "12:00 pm - 3:00 pm",
+        "Sunday": "Closed",
         "Monday": "5:30 pm - 11:00 pm",
         "Tuesday": "5:30 pm - 11:00 pm",
         "Wednesday": "5:30 pm - 11:00 pm",
@@ -94,7 +94,7 @@
       },
       "cuisine_type": "Asian",
       "operating_hours": {
-        "Sunday": "11:30 am - 2:00 am",
+        "Sunday": "Closed",
         "Monday": "11:30 am - 2:00 am",
         "Tuesday": "11:30 am - 2:00 am",
         "Wednesday": "11:30 am - 2:00 am",
