@@ -23,8 +23,10 @@ export default function Card({ restaurant }) {
       </div>
       <div className={classes.middle}>
         <h4 className={classes.title}>{restaurant.name}</h4>
-        <Ratter rate={restaurant.rating} />
-        {restaurant.reviewsAccount}(opinions)
+        <span>
+          <Ratter rate={restaurant.rating} />({restaurant.reviewsAccount}{" "}
+          opinions)
+        </span>
         <span
           className={classes.stateLabel}
           style={{ color: restaurant.isOpenAtNow ? "#00aa66" : "#cc0000" }}

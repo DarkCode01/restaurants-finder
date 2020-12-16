@@ -13,7 +13,7 @@ export default function Ratter({ rate }) {
         color: `${rate >= 3.5 ? "#00aa66" : rate >= 2 ? "#aa6600" : "#dd2200"}`,
       }}
     >
-      {rate.toFixed(1)}<Star />
+      {rate.toFixed(1)}<Star/>
     </span>
   );
 }

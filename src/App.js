@@ -49,8 +49,8 @@ function App() {
     }
   };
 
-  const onSearch = (event) => {
-    const value = event.target.value;
+  const onSearch = (target) => {
+    const value = target.value;
     const words = value.split(" ");
     setFiltered(
       _filterRestaurants(

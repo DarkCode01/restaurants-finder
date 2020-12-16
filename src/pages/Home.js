@@ -7,6 +7,8 @@ import { Container } from "@material-ui/core";
 export default function Home({
   fetchRestaurants,
   onSearch,
+  searchText,
+  setSearchText,
   drawerIsOpen,
   toogleDrawer,
   filtered,
