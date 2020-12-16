@@ -22,7 +22,9 @@ export default class Schedule {
         closeAt: new Date(
           (closes[3] === "am" ? tomorrow : today) +
             (closes[3] === "am" || closes[1] === "12"
-              ? closes[1] !== "12"? parseInt(closes[1]) : 0
+              ? closes[1] !== "12"
+                ? parseInt(closes[1])
+                : 0
               : 12 + parseInt(closes[1])) *
               3600 *
               1000 +
@@ -30,5 +32,17 @@ export default class Schedule {
         ),
       });
     }
+  }
+
+  get weekDays() {
+    return [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thurstday",
+      "Friday",
+      "Saturday",
+    ];
   }
 }

@@ -2,6 +2,7 @@ import Schedule from "./Schedule";
 import Review from "./Review";
 export default class Restaurant {
   constructor(obj) {
+    this.raw = obj;
     this.id = obj.id;
     this.name = obj.name;
     this.neighborhood = obj.neighborhood;
@@ -32,6 +33,11 @@ export default class Restaurant {
     const now = new Date();
     const day = this.schedule.days[now.getDay()];
     return now > day.openAt && now < day.closeAt;
+  }
+
+  addReview(obj){
+    this.raw.reviews.splice(0,0,obj);
+    return new Restaurant(this.raw);
   }
 
   isOpenAt(date) {}

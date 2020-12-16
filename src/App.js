@@ -1,22 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Restaurant from "./models/Restaurant";
+import RestaurantPage from "./pages/Restaurant/Restaurant";
 import "./App.css";
 import axios from "axios";
-import Appbar from "./components/Appbar";
-import Card from "./components/Card";
-import {
-  Container,
-  Drawer,
-  ListItem,
-  Divider,
-  Checkbox,
-  IconButton,
-} from "@material-ui/core";
-import { Done } from "@material-ui/icons";
+
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 function App() {
   const [restaurants, setRestaurants] = useState([]);
+  const [restaurant, setRestaurant] = useState(null);
   const [filtered, setFiltered] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
@@ -25,23 +17,35 @@ function App() {
     location: false,
     openNow: false,
   });
-  useEffect(() => {
-    (async function fetch() {
-      try {
-        const response = await axios.get("api/restaurant-data.json");
-        const data = response.data.restaurants;
-        const restaurants = data.map(
-          (restaurant) => new Restaurant(restaurant)
-        );
 
-        setRestaurants(restaurants);
-        setFiltered(restaurants);
-      } catch (err) {
-        console.log(err);
-      }
-      console.log("loading");
-    })();
-  }, []);
+  const fetchRestaurants = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get("/api/restaurant-data.json");
+      const data = response.data.restaurants;
+      const restaurants = data.map((restaurant) => new Restaurant(restaurant));
+
+      setRestaurants(restaurants);
+      setFiltered(restaurants);
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const fetchRestaurant = async (id) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get("/api/restaurant-data.json");
+      const data = response.data.restaurants;
+      const restaurant = new Restaurant(
+        data.find((r) => r.id.toString() === id)
+      );
+      setRestaurant(restaurant);
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const onSearch = (event) => {
     const value = event.target.value;
@@ -61,86 +65,56 @@ function App() {
     setDrawerIsOpen(!drawerIsOpen);
   };
 
-  // return (
-  //   <div className="App">
-  //     <Appbar onSearch={onSearch} onFilterClick={toogleDrawer}></Appbar>
-  //     <Container>
-  //       {filtered.map((restaurant) => (
-  //         <Card restaurant={restaurant} key={restaurant.id}></Card>
-  //       ))}
+  const saveFilters = (filters) => {
+    setFilters(filters);
+    setFiltered(
+      restaurants
+        .filter((restaurant) => {
+          if (filters.openNow && !restaurant.isOpenAtNow) {
+            return false;
+          }
+          return true;
+        })
+        .sort((a, b) => {
+          if (filters.rating) {
+            return b.rating - a.rating;
+          }
+          return 1;
+        })
+    );
+    toogleDrawer();
+  };
 
-  //       <Drawer
-  //         onClose={() => {
-  //           setDrawerIsOpen(false);
-  //         }}
-  //         anchor="bottom"
-  //         variant="temporary"
-  //         open={drawerIsOpen}
-  //       >
-  //         <div style={{ display: "flex", justifyContent: "space-between" }}>
-  //           <h5 style={{ paddingLeft: "8px" }}>Order by</h5>
-  //           <IconButton
-  //             onClick={() => {
-  //               setFiltered(
-  //                 restaurants
-  //                   .filter((restaurant) => {
-  //                     if (filters.openNow && !restaurant.isOpenAtNow) {
-  //                       return false;
-  //                     }
-  //                     return true;
-  //                   })
-  //                   .sort((a, b) => {
-  //                     if (filters.rating) {
-  //                       return b.rating - a.rating;
-  //                     }
-  //                     return 1;
-  //                   })
-  //               );
-  //               setDrawerIsOpen(false);
-  //             }}
-  //           >
-  //             <Done />
-  //           </IconButton>
-  //         </div>
-  //         <ListItem>
-  //           <Checkbox
-  //             checked={filters.rating}
-  //             onChange={(e, checked) => {
-  //               setFilters({ ...filters, rating: checked });
-  //             }}
-  //           />
-  //           Rating
-  //         </ListItem>
-  //         <ListItem>
-  //           <Checkbox
-  //             checked={filters.location}
-  //             onChange={(e, checked) => {
-  //               setFilters({ ...filters, location: checked });
-  //             }}
-  //           />
-  //           Location
-  //         </ListItem>
-  //         <Divider />
-  //         <h5 style={{ paddingLeft: "8px" }}>Filter by</h5>
-  //         <ListItem>
-  //           <Checkbox
-  //             checked={filters.openNow}
-  //             onChange={(e, checked) => {
-  //               setFilters({ ...filters, openNow: checked });
-  //             }}
-  //           />
-  //           Open now
-  //         </ListItem>
-  //       </Drawer>
-  //     </Container>
-  //   </div>
-  // );
-
-  return <Router>
-    <Switch>
-      <Route path="/" exact component={Home}></Route>
-    </Switch>
-  </Router>
+  const addReview = (review) => {
+    const r =restaurant.addReview(review);
+    setRestaurant(r);
+    console.log('sete')
+  };
+  return (
+    <Router>
+      <Switch>
+        <Route path="/" exact>
+          <Home
+            fetchRestaurants={fetchRestaurants}
+            onSearch={onSearch}
+            toogleDrawer={toogleDrawer}
+            saveFilters={saveFilters}
+            drawerIsOpen={drawerIsOpen}
+            filtered={filtered}
+            filters={filters}
+          />
+        </Route>
+        <Route path="/restaurant/:id">
+          <RestaurantPage
+            isLoading={isLoading}
+            restaurant={restaurant}
+            fetchRestaurant={fetchRestaurant}
+            addReview={addReview}
+          />
+        </Route>
+      </Switch>
+    </Router>
+  );
 }
 
 export default App;
