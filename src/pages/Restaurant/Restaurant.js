@@ -1,11 +1,6 @@
 import React, { useEffect, Fragment, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  TextField,
-  Slider,
-  Container,
-  Button,
-} from "@material-ui/core";
+import { TextField, Slider, Container, Button } from "@material-ui/core";
 import useStyles from "./styles";
 import Schedule from "../../components/layout/Schedule/Schedule";
 import Review from "../../components/layout/Review/Review";
@@ -42,6 +37,7 @@ export default function Restaurant({
       />
       <Container>
         <Schedule schedule={restaurant.schedule} />
+
         <h3>Reviews from our customers</h3>
         <div className={classes.reviews}>
           {restaurant.reviews.map((review, index) => {
@@ -100,6 +96,6 @@ export default function Restaurant({
       </Container>
     </Fragment>
   ) : (
-    <Loading/>
+    <Loading />
   );
 }

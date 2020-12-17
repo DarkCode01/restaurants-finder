@@ -5,7 +5,7 @@ const useStyles = makeStyles(() => ({
     padding: "10px",
     margin: '6px',
     width: '100%',
-    maxWidth: '400px',
+    maxWidth: '350px',
     border: "1px solid #ddd",
     "& div": {
       display: "flex",
