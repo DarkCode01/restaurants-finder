@@ -44,7 +44,7 @@ export default class Schedule {
       "Monday",
       "Tuesday",
       "Wednesday",
-      "Thurstday",
+      "Thursday",
       "Friday",
       "Saturday",
     ];

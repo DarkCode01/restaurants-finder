@@ -24,7 +24,10 @@ export default function Drawer({ toogleDrawer, isOpen, saveFilters, filters }) {
   ];
   return (
     <MUIDrawer
-      onClose={toogleDrawer}
+      onClose={() => {
+        setLocalFilters(filters);
+        toogleDrawer();
+      }}
       anchor="bottom"
       variant="temporary"
       open={isOpen}
@@ -44,17 +47,54 @@ export default function Drawer({ toogleDrawer, isOpen, saveFilters, filters }) {
         />
         Rating
       </ListItem>
-      <ListItem>
-        <Checkbox
-          checked={localFilters.location}
-          onChange={(e, checked) => {
-            setLocalFilters({ ...setLocalFilters, location: checked });
-          }}
-        />
-        Location
-      </ListItem>
       <Divider />
       <h5 style={{ paddingLeft: "8px" }}>Filter by</h5>
+      <ListItem>
+        <Radio
+          checked={localFilters.noFilters}
+          onChange={(_, checked) => {
+            setLocalFilters({
+              ...localFilters,
+              noFilters: checked,
+              location: false,
+              openNow: false,
+              openAt: false,
+            });
+          }}
+        />
+        No Filters
+      </ListItem>
+      <ListItem>
+        <Radio
+          checked={localFilters.location}
+          onChange={(_, checked) => {
+            setLocalFilters({
+              ...localFilters,
+              location: checked,
+              noFilters: false,
+              openNow: false,
+              openAt: false,
+            });
+          }}
+        />
+        Range of &nbsp;
+        <Select
+          value={localFilters.distance}
+          onChange={(event) => {
+            setLocalFilters({
+              ...localFilters,
+              distance: event.target.value,
+            });
+          }}
+        >
+          {[5,10,20,25,30,40,50,60,70,80,90,100].map((distance, index) => (
+            <MenuItem key={index} value={distance}>
+              {distance}
+            </MenuItem>
+          ))}
+        </Select>
+        KM
+      </ListItem>
       <ListItem>
         <Radio
           checked={localFilters.openNow}
@@ -62,6 +102,8 @@ export default function Drawer({ toogleDrawer, isOpen, saveFilters, filters }) {
             setLocalFilters({
               ...localFilters,
               openNow: checked,
+              noFilters: false,
+              location: false,
               openAt: false,
             });
           }}
@@ -75,17 +117,22 @@ export default function Drawer({ toogleDrawer, isOpen, saveFilters, filters }) {
             setLocalFilters({
               ...localFilters,
               openNow: false,
+              noFilters: false,
+              location: false,
               openAt: checked,
             });
           }}
         />{" "}
         Open At &nbsp;
-        <Select value={localFilters.openDay} onChange={(event)=>{
-          setLocalFilters({
-            ...localFilters,
-            openDay: event.target.value
-          })
-        }}>
+        <Select
+          value={localFilters.openDay}
+          onChange={(event) => {
+            setLocalFilters({
+              ...localFilters,
+              openDay: event.target.value,
+            });
+          }}
+        >
           {weekDays.map((day, index) => (
             <MenuItem key={index} value={index.toString()}>
               {day}

@@ -6,6 +6,7 @@ export default class Restaurant {
     this.id = obj.id;
     this.name = obj.name;
     this.neighborhood = obj.neighborhood;
+    this.latlng = obj.latlng;
     this.picture = obj.photograph;
     this.address = obj.address;
     this.cuisine_type = obj.cuisine_type;
