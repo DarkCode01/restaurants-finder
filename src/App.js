@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import Restaurant from "./models/Restaurant";
-import RestaurantPage from "./pages/Restaurant/Restaurant";
-import "./App.css";
-import axios from "axios";
-
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Home from "./pages/Home";
+
+import RestaurantPage from "./pages/Restaurant/Restaurant";
+import Home from "./pages/Home/Home";
+import { fetchRestaurant, fetchRestaurants } from "./services/api";
+
 function App() {
   const [restaurants, setRestaurants] = useState([]);
   const [restaurant, setRestaurant] = useState(null);
@@ -20,33 +19,29 @@ function App() {
     openDay: 0,
   });
 
-  const fetchRestaurants = async () => {
-    try {
-      setIsLoading(true);
-      const response = await axios.get("/api/restaurant-data.json");
-      const data = response.data.restaurants;
-      const restaurants = data.map((restaurant) => new Restaurant(restaurant));
-
-      setRestaurants(restaurants);
-      setFiltered(restaurants);
-      setIsLoading(false);
-    } catch (err) {
-      console.log(err);
-    }
+  const getRestaurant = (id) => {
+    setIsLoading(true);
+    fetchRestaurant(id)
+      .then((restaurant) => {
+        setRestaurant(restaurant);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+      });
   };
-  const fetchRestaurant = async (id) => {
-    try {
-      setIsLoading(true);
-      const response = await axios.get("/api/restaurant-data.json");
-      const data = response.data.restaurants;
-      const restaurant = new Restaurant(
-        data.find((r) => r.id.toString() === id)
-      );
-      setRestaurant(restaurant);
-      setIsLoading(false);
-    } catch (err) {
-      console.log(err);
-    }
+
+  const getRestaurants = () => {
+    setIsLoading(true);
+    fetchRestaurants()
+      .then((restaurants) => {
+        setRestaurants(restaurants);
+        setFiltered(restaurants);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+      });
   };
 
   const onSearch = (target) => {
@@ -99,12 +94,13 @@ function App() {
     setRestaurant(r);
     console.log("sete");
   };
+
   return (
     <Router>
       <Switch>
         <Route path="/" exact>
           <Home
-            fetchRestaurants={fetchRestaurants}
+            fetchRestaurants={getRestaurants}
             onSearch={onSearch}
             toogleDrawer={toogleDrawer}
             saveFilters={saveFilters}
@@ -117,7 +113,7 @@ function App() {
           <RestaurantPage
             isLoading={isLoading}
             restaurant={restaurant}
-            fetchRestaurant={fetchRestaurant}
+            fetchRestaurant={getRestaurant}
             addReview={addReview}
           />
         </Route>

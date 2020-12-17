@@ -1,15 +1,26 @@
 import React from "react";
-import Arrow from "../icons/arrow_right.svg";
-import useStyles from "./Card.styles";
+import { KeyboardArrowRight } from "@material-ui/icons";
+import useStyles from "./styles";
 import { useHistory } from "react-router-dom";
-import Ratter from "./utils/Ratter";
+import Ratter from "../../utils/Ratter";
 export default function Card({ restaurant }) {
   const classes = useStyles();
   const history = useHistory();
+
+  const {
+    id,
+    picture,
+    cuisine_type,
+    name,
+    reviewsAccount,
+    rating,
+    isOpenAtNow,
+  } = restaurant;
+  
   return (
     <li
       className={classes.card}
-      onClick={() => history.push("/restaurant/" + restaurant.id)}
+      onClick={() => history.push("/restaurant/" + id)}
     >
       <div className={classes.left}>
         <img
@@ -17,25 +28,24 @@ export default function Card({ restaurant }) {
           className={classes.picture}
           width="50"
           height="50"
-          src={"/images/small/" + restaurant.picture}
+          src={"/images/small/" + picture}
         />
-        <span>{restaurant.cuisine_type}</span>
+        <span>{cuisine_type}</span>
       </div>
       <div className={classes.middle}>
-        <h4 className={classes.title}>{restaurant.name}</h4>
+        <h4 className={classes.title}>{name}</h4>
         <span>
-          <Ratter rate={restaurant.rating} />({restaurant.reviewsAccount}{" "}
-          opinions)
+          <Ratter rate={rating} />({reviewsAccount} opinions)
         </span>
         <span
           className={classes.stateLabel}
-          style={{ color: restaurant.isOpenAtNow ? "#00aa66" : "#cc0000" }}
+          style={{ color: isOpenAtNow ? "#00aa66" : "#cc0000" }}
         >
-          {restaurant.isOpenAtNow ? "Open" : "Closed"}
+          {isOpenAtNow ? "Open" : "Closed"}
         </span>
       </div>
       <div className={classes.right}>
-        <img src={Arrow} alt="Next Arrow" />
+        <KeyboardArrowRight />
       </div>
     </li>
   );

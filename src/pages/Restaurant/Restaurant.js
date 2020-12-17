@@ -1,7 +1,6 @@
 import React, { useEffect, Fragment, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  CircularProgress,
   TextField,
   Slider,
   Container,
@@ -11,6 +10,7 @@ import useStyles from "./styles";
 import Schedule from "../../components/layout/Schedule/Schedule";
 import Review from "../../components/layout/Review/Review";
 import ImageAppBar from "../../components/layout/ImageAppBar/ImageAppBar";
+import Loading from "../../components/utils/Loading";
 
 export default function Restaurant({
   isLoading,
@@ -31,7 +31,7 @@ export default function Restaurant({
     fetchRestaurant(params.id);
   }, []);
 
-  return !isLoading && restaurant? (
+  return !isLoading && restaurant ? (
     <Fragment>
       <ImageAppBar
         name={restaurant.name}
@@ -50,7 +50,7 @@ export default function Restaurant({
         </div>
 
         <div>
-          <h3>Let us now how great was your experince with us</h3>
+          <h3>Let us now how great was your experience with us</h3>
           <p>
             Please comment about everything that keep your attentions in our
             restaurant, was a good experience? exelent, was not so good? no
@@ -90,6 +90,7 @@ export default function Restaurant({
               variant="contained"
               onClick={() => {
                 addReview(review);
+                setReview({ ...review, name: "", comments: "", rating: 5 });
               }}
             >
               Send
@@ -99,15 +100,6 @@ export default function Restaurant({
       </Container>
     </Fragment>
   ) : (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        height: "98vh",
-        alignItems: "center",
-      }}
-    >
-      <CircularProgress />
-    </div>
+    <Loading/>
   );
 }

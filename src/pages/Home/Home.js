@@ -1,14 +1,12 @@
-import React, { useEffect } from "react";
-import Appbar from "../components/Appbar";
-import Card from "../components/Card";
-import Drawer from "../components/layout/Drawer";
+import React, { Fragment, useEffect } from "react";
+import Appbar from "../../components/layout/AppBar/AppBar";
+import Card from "../../components/layout/Card/Card";
+import Drawer from "../../components/layout/Drawer/Drawer";
 import { Container } from "@material-ui/core";
 
 export default function Home({
   fetchRestaurants,
   onSearch,
-  searchText,
-  setSearchText,
   drawerIsOpen,
   toogleDrawer,
   filtered,
@@ -16,11 +14,12 @@ export default function Home({
   filters,
 }) {
   useEffect(() => {
+    console.log("loop");
     fetchRestaurants();
   }, []);
 
   return (
-    <div className="App">
+    <Fragment>
       <Appbar onSearch={onSearch} onFilterClick={toogleDrawer}></Appbar>
       <Container>
         {filtered.map((restaurant) => (
@@ -33,6 +32,6 @@ export default function Home({
           filters={filters}
         />
       </Container>
-    </div>
+    </Fragment>
   );
 }

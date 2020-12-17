@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import useStyles from "./Appbar.styles";
+import useStyles from "./styles";
 import { IconButton, TextField } from "@material-ui/core";
 import { Search, FilterList, Close } from "@material-ui/icons";
 export default function Appbar({ onSearch, onFilterClick }) {
