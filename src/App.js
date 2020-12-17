@@ -92,7 +92,6 @@ function App() {
   const addReview = (review) => {
     const r = restaurant.addReview(review);
     setRestaurant(r);
-    console.log("sete");
   };
 
   return (

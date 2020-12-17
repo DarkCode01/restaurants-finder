@@ -14,7 +14,6 @@ export default function Home({
   filters,
 }) {
   useEffect(() => {
-    console.log("loop");
     fetchRestaurants();
   }, []);
 
