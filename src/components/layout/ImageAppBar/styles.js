@@ -19,7 +19,16 @@ const useStyles = makeStyles(() => ({
       padding: "12px",
       margin: "0",
     },
+    "& h2": {
+      display: 'flex',
+      color: 'white',
+      padding: '0',
+      alignItems: 'center'
+    }
   },
+  backIcon: {
+    color: 'white'
+  }
 }));
 
 export default useStyles;

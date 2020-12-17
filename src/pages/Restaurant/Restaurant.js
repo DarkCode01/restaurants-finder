@@ -1,5 +1,5 @@
 import React, { useEffect, Fragment, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { TextField, Slider, Container, Button } from "@material-ui/core";
 import useStyles from "./styles";
 import Schedule from "../../components/layout/Schedule/Schedule";
@@ -21,6 +21,7 @@ export default function Restaurant({
   });
   const classes = useStyles();
   const params = useParams();
+  const history = useHistory();
 
   useEffect(() => {
     fetchRestaurant(params.id);
@@ -34,6 +35,9 @@ export default function Restaurant({
         reviewsAccount={restaurant.reviewsAccount}
         isOpenAtNow={restaurant.isOpenAtNow}
         address={restaurant.address}
+        goBack={()=>{
+          history.replace('/')
+        }}
       />
       <Container>
         <Schedule schedule={restaurant.schedule} />
