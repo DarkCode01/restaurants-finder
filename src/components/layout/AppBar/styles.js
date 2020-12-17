@@ -21,6 +21,7 @@ const useStyles = makeStyles(() => ({
   search: {
     transition: "transform .250s",
     height: '43px',
+    maxWidth: '400px',
     flexGrow: '1',
     "& input": { padding: "12px" },
   },
