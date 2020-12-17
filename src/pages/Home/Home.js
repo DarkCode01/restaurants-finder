@@ -21,9 +21,23 @@ export default function Home({
     <Fragment>
       <Appbar onSearch={onSearch} onFilterClick={toogleDrawer}></Appbar>
       <Container>
-        {filtered.map((restaurant) => (
-          <Card restaurant={restaurant} key={restaurant.id}></Card>
-        ))}
+        {filtered.length ? (
+          filtered.map((restaurant) => (
+            <Card restaurant={restaurant} key={restaurant.id}></Card>
+          ))
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "64px",
+              alignItems: "center",
+            }}
+          >
+            Upss, there is not restaurants, please try to update filters and try
+            again.
+          </div>
+        )}
         <Drawer
           toogleDrawer={toogleDrawer}
           isOpen={drawerIsOpen}
