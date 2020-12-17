@@ -1,12 +1,12 @@
 import React, { useEffect, Fragment, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { TextField, Slider, Container, Button } from "@material-ui/core";
+import { Container, Snackbar } from "@material-ui/core";
 import useStyles from "./styles";
 import Schedule from "../../components/layout/Schedule/Schedule";
 import Review from "../../components/layout/Review/Review";
 import ImageAppBar from "../../components/layout/ImageAppBar/ImageAppBar";
 import Loading from "../../components/utils/Loading";
-
+import AddFormReview from "../../components/layout/AddReviewForm/AddReviewForm";
 export default function Restaurant({
   isLoading,
   fetchRestaurant,
@@ -19,9 +19,20 @@ export default function Restaurant({
     rating: 5,
     date: new Date().toLocaleDateString(),
   });
+  const [snackbarIsOpen, setSnackbarIsOpen] = useState(false);
+
   const classes = useStyles();
   const params = useParams();
   const history = useHistory();
+
+  const sendReview = () => {
+    if (review.name && review.comments) {
+      addReview(review);
+      setReview({ ...review, name: "", comments: "", rating: 5 });
+    } else {
+      setSnackbarIsOpen(true);
+    }
+  };
 
   useEffect(() => {
     fetchRestaurant(params.id);
@@ -35,8 +46,8 @@ export default function Restaurant({
         reviewsAccount={restaurant.reviewsAccount}
         isOpenAtNow={restaurant.isOpenAtNow}
         address={restaurant.address}
-        goBack={()=>{
-          history.replace('/')
+        goBack={() => {
+          history.replace("/");
         }}
       />
       <Container>
@@ -48,56 +59,19 @@ export default function Restaurant({
             return <Review key={index} review={review} />;
           })}
         </div>
-
-        <div>
-          <h3>Let us now how great was your experience with us</h3>
-          <p>
-            Please comment about everything that keep your attentions in our
-            restaurant, was a good experience? exelent, was not so good? no
-            problem, tell us what can we do to offer the best service for you.
-          </p>
-
-          <form className={classes.form}>
-            <span>Stars</span>
-            <Slider
-              defaultValue={review.stars || 5}
-              onChange={(_, value) =>
-                setReview({ ...review, rating: parseInt(value) })
-              }
-              max={5}
-              min={1}
-              step={1}
-              valueLabelDisplay="on"
-            />
-            <TextField
-              label="Name"
-              value={review.name}
-              onChange={({ target }) =>
-                setReview({ ...review, name: target.value })
-              }
-            />
-            <TextField
-              label="Comment"
-              multiline
-              value={review.comments}
-              onChange={({ target }) =>
-                setReview({ ...review, comments: target.value })
-              }
-            />
-            <Button
-              className={classes.button}
-              color="primary"
-              variant="contained"
-              onClick={() => {
-                addReview(review);
-                setReview({ ...review, name: "", comments: "", rating: 5 });
-              }}
-            >
-              Send
-            </Button>
-          </form>
-        </div>
+        <AddFormReview
+          review={review}
+          setReview={setReview}
+          sendReview={sendReview}
+        />
       </Container>
+      <Snackbar
+        open={snackbarIsOpen}
+        color="#333"
+        autoHideDuration={5000}
+        onClose={() => setSnackbarIsOpen(false)}
+        message="Please fill required fields"
+      ></Snackbar>
     </Fragment>
   ) : (
     <Loading />
